@@ -306,4 +306,6 @@ extern char *pwenc(const char *input);
 extern int check_model_name(void);
 #endif
 
+int do_ssl;     // use Global for HTTPS upgrade judgment in web.
+
 #endif /* _httpd_h_ */

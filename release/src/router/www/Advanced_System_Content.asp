@@ -166,10 +166,12 @@ function initial(){
 	if(!HTTPS_support){
 		document.getElementById("https_tr").style.display = "none";
 		document.getElementById("https_lanport").style.display = "none";
+		document.getElementById("http_redirect_to_https").style.display = "none";
 	}
 	else{
 		hide_https_lanport(document.form.http_enable.value);
 		hide_https_wanport(document.form.http_enable.value);
+		hide_http_redirect_to_https(document.form.http_enable.value);
 		hide_https_crt();
 	}	
 	
@@ -876,6 +878,10 @@ function load_dst_h_Options(){
 				add_option(document.form.dst_end_h, dst_hour[i], i, 0);			
 		}
 	}	
+}
+
+function hide_http_redirect_to_https(_value){
+	document.getElementById("http_redirect_to_https").style.display = (_value == "2") ? "" : "none";
 }
 
 function hide_https_lanport(_value){
@@ -1628,7 +1634,7 @@ function hide_cert() {
 				<tr id="https_tr">
 					<th><#WLANConfig11b_AuthenticationMethod_itemname#></th>
 					<td>
-						<select name="http_enable" class="input_option" onchange="hide_https_lanport(this.value);hide_https_wanport(this.value);hide_https_crt();">
+						<select name="http_enable" class="input_option" onchange="hide_https_lanport(this.value);hide_https_wanport(this.value);hide_https_crt();hide_http_redirect_to_https(this.value);">
 							<option value="0" <% nvram_match("http_enable", "0", "selected"); %>>HTTP</option>
 							<option value="1" <% nvram_match("http_enable", "1", "selected"); %>>HTTPS</option>
 							<option value="2" <% nvram_match("http_enable", "2", "selected"); %>>BOTH</option>
@@ -1643,6 +1649,15 @@ function hide_cert() {
 						<span id="https_access_page"></span>
 					</td>
 				</tr>
+
+				<tr id="http_redirect_to_https">
+					<th>Redirect webui access to HTTPS</th>
+					<td>
+						<input type="radio" value="1" name="http_redirect_to_https" <% nvram_match("http_redirect_to_https", "1", "checked"); %>><#checkbox_Yes#>
+						<input type="radio" value="0" name="http_redirect_to_https" <% nvram_match("http_redirect_to_https", "0", "checked"); %>><#checkbox_No#>
+					</td>
+				</tr>
+
 				<tr id="https_crt_save">
 					<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,21)">Use persistent certificate</a></th>
 					<td>

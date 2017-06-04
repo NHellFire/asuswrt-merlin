@@ -394,7 +394,15 @@ send_login_page(int fromapp_flag, int error_status, char* url, char* file, int l
 				}
 			}
 		}
-		snprintf(inviteCode, sizeof(inviteCode), "<script>top.location.href='/Main_Login.asp';</script>");
+#ifdef RTCONFIG_HTTPS
+		if(!do_ssl && nvram_match("http_redirect_to_https", "1") && nvram_match("http_enable", "2")){
+			snprintf(inviteCode, sizeof(inviteCode), "<script>top.location.href='https://' + location.host + ':%d/Main_Login.asp';</script>", nvram_get_int("https_lanport"));
+		}else{
+#endif
+			snprintf(inviteCode, sizeof(inviteCode), "<script>top.location.href='/Main_Login.asp';</script>");
+#ifdef RTCONFIG_HTTPS
+		}
+#endif
 	}else{
 		snprintf(inviteCode, sizeof(inviteCode), "\"error_status\":\"%d\"", error_status);
 	}
